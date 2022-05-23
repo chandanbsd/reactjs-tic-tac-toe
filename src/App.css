@@ -1,0 +1,18 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+.game-container {
+  text-align: center;
+  font-size: xx-large;
+  padding: 5%;
+}
+
+button {
+  color: white;
+  border: none;
+  background: none;
+  padding: 5%;
+  font-size: xx-large;
+}
