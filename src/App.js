@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Symbol from "./components/Symbol";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./App.css";
+import themeStyle from "./styles";
+import "./App.css"
 
-const App = () => {
+import ThemeContext from "./context/ThemeContext";
+
+const GameBoard = () => {
+  const [theme, setTheme] = useContext(ThemeContext)
   const [gameGrid, setGameGrid] = useState(Array(9).fill(null));
   const [circleTurn, setCircleTurn] = useState(true);
   const [victor, setVictor] = useState(null);
   const [instruction, setInstruction] = useState("Circle Plays First");
+
 
   const resetGame = () => {
     setGameGrid(Array(9).fill(null));
@@ -100,14 +105,14 @@ const App = () => {
   };
 
   return (
-    <div className="game-container">
+    <div className="game-container" style={themeStyle[theme]}>
       <div className="title-msg">{instruction}</div>
       <span>
         {gameGrid.map((item, index) => {
           if ((index + 1) % 3 === 0) {
             return (
               <span key={index}>
-                <button key={index} onClick={() => playTurn(index)}>
+                <button key={index} onClick={() => playTurn(index) } style={themeStyle[theme]}>
                   <Symbol type={item} />
                 </button>
                 <br />
@@ -115,16 +120,28 @@ const App = () => {
             );
           } else
             return (
-              <button key={index} onClick={() => playTurn(index)}>
+              <button key={index} onClick={() => playTurn(index)} style={themeStyle[theme]}>
                 <Symbol type={item} />
               </button>
             );
         })}
         <ToastContainer />
       </span>
-      <button onClick={resetGame}>Restart</button>
+      <button onClick={resetGame} style={themeStyle[theme]}>Restart</button>
+      <button onClick={() => {theme === "light"? setTheme("dark"): setTheme("light")}} style={themeStyle[theme]}>Change Theme</button>
     </div>
   );
+}
+
+const App = () => {
+  const [theme, setTheme] = useState("light");
+  
+  return(
+    <ThemeContext.Provider value={[theme, setTheme]}>
+      <GameBoard/>
+    </ThemeContext.Provider>
+  )
+
 };
 
 export default App;
